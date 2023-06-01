@@ -1,28 +1,35 @@
+import { NextResponse } from 'next/server';
 import { updateTodoItem } from '../../repositories/todo-item.repository';
 
 /**
  * PUT /api/update/:id
  */
-export async function handle(req, res) {
-  if (req.method === 'PUT') {
-    const id = req.query.id
-    const { title, description, dueDate} = req.body;
+export async function PUT(request, { params }) {
+  const { title, description, dueDate } = req.body;
+  const id = params.id;
 
+  if (request.method === 'PUT') {
     try {
-      const updatedTodo = await updateTodoItem({
+      const updatedItem = await updateTodoItem({
         id,
         title,
         description,
         dueDate
       });
-
-      res.status(201).json(updatedTodo)
+  
+      return NextResponse.json(
+        updatedItem,
+        { status: 200 }
+      );
     } catch (e) {
-      console.log(`Err: ${e}`)
-
-      res(500).json({ error: 'Internal Server Error' })
+      console.log(`Err: ${e}`);
+  
+      return NextResponse({ error: 'Internal Server Error'}, { status: 500 });
     }
   } else {
-    res(405).json({ error: 'Must use PUT method' })
+    return NextResponse.json(
+      { error: 'Must use PUT method' },
+      { status: 405 }
+    );
   }
 }

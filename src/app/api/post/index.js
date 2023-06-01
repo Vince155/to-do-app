@@ -1,21 +1,28 @@
+import { NextResponse } from 'next/server';
 import { createTodoItem } from '../../../repositories/todo-item.repository'
 
 /**
  * POST /api/post
  */
-export async function handle(req, res) {
-  if (req.method === 'POST') {
+export async function POST(request) {
+  if (request.method === 'POST') {
     try {
-      const todo = req.body;
+      const todo = request.body;
       const todoItem = await createTodoItem(todo);
 
-      res.status(201).json(todoItem);
+      return NextResponse.json(todoItem, { status: 201 });
     } catch (e) {
       console.log(`Error creating todo - ${e}`)
 
-      res.status(500).json({ error: 'Internal Server Error' })
+      return NextResponse.json(
+        { error: 'Internal Server Error' },
+        { status: 500 }
+      )
     }
   } else {
-    res.status(405).json({ error: 'Must use POST method' })
+    return NextResponse.json(
+      { error: 'Must use POST method' },
+      { status: 405 }
+    );
   }
 }

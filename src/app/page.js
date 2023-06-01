@@ -1,12 +1,10 @@
-import { Router } from 'next/router';
-import { findAll } from '../../repositories/todo-item.repository';
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
+"use client"
 
+import { useEffect, useState } from 'react';
 
 async function getTodoListItems() {
   try {
-    const response = await fetch('/api/todo', {
+    const response = await fetch('http://localhost:3000/api/todo/', {
       method: 'GET'
     });
 
@@ -14,18 +12,12 @@ async function getTodoListItems() {
 
     return todoItems;
   } catch (e) {
-    console.log(`Error getting todo list`)
-  }
-  
-  await Router.push('/')
+    console.log(`Error getting todo list - ${e}`)
+  }  
 }
 
 export default function Home() {
   const [todoItems, setTodoItems] = useState([]);
-
-  const items = getTodoListItems();
-
-  setTodoItems(items);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
