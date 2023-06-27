@@ -1,6 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import prisma from '../../prisma/client';
 
 /**
  * Get all of the existing todos
@@ -14,8 +12,6 @@ export async function findAll() {
     return allItems;
   } catch (e) {
     console.log(`Err: ${e}`)
-  } finally {
-    await prisma.$disconnect();
   }
 }
 
@@ -34,8 +30,6 @@ export async function findOne({ id }) {
     return todoItem;
   } catch (e) {
     console.log(`Err: ${e}`)
-  } finally {
-    await prisma.$disconnect();
   }
 }
 
@@ -54,8 +48,6 @@ export async function deleteTodo({ id }) {
     return todo;
   } catch (e) {
     console.log(`Err: ${e}`)
-  } finally {
-    await prisma.$disconnect();
   }
 }
 
@@ -89,8 +81,6 @@ export async function createTodoItem({
     console.log(`Err: ${e}`);
 
     return null;
-  } finally {
-    await prisma.$disconnect();
   }
 }
 
@@ -126,7 +116,5 @@ export async function updateTodoItem({
     console.log(`Err: ${e}`);
 
     return null;
-  } finally {
-    await prisma.$disconnect();
   }
 }
